@@ -1,0 +1,19 @@
+{
+  "name": "codegolf",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^5.3.1"
+  },
+  "dependencies": {
+    "diff-match-patch": "^1.0.5",
+    "diff2html": "^3.4.48",
+    "monaco-editor": "^0.50.0"
+  }
+}
