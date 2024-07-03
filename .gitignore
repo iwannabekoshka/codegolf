@@ -1,24 +1,93 @@
-# Logs
-logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
+### Python template
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
 
-node_modules
-dist
-dist-ssr
-*.local
+# C extensions
+*.so
 
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
+# Translations
+*.mo
+*.pot
+
+# Косяки плагина VSCode
+.PVS-Studio/
+
 .idea
-.DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
+
+node_modules/
+
+data/mysql/
+data/mongo/
+
+media/
+
+static/**/*.js*
+static/**/*.css*
+static/**/placeholders
+static/admin
+static/django_tinymce
+static/epiceditor
+static/front
+static/print
+static/summernote
+static/tinymce
+static/to-markdown
+static/wym
+static/jquery.ajaxSubmit.min.js
+static/tinymce.css
+static/style.css*
+static/vite
+static/js
+static/styles
+static/games
+
+# Перенесены из CDN-ов
+!static/lazyload.min.js
+!static/jquery.ajaxSubmit.min.js
+!static/jquery.maskedinput.min.js
+!static/lg-zoom.js
+!static/lightgallery.js
+!static/jquery.min.js
+!static/swiper.min.css
+
+content/templates/generator/result
+cron.log
+sso.log
+
+pvs/pvs.ini
+pvs/static_version.py
+pvs/product_version.py
+
+content/templates/generator/result/ru.html
+content/templates/generator/result/en.html
+data/crontab/root
+data/storage
+data/docx
+data/ssl/pvs.com.pem
+data/ssl/pvs.ru.pem
+data/ssl/pvs.ru.crt
+data/ssl/pvs.com.crt
+data/ssl/pvs.ru.csr
+data/ssl/pvs.com.csr
+data/ssl/pvs.srl
+data/ssl/rootCA.key
+scripts/install/local_m1/db
+scripts/install/local_m1/dump.7z
+
+docker-compose.yml
+/data/ssl/pvs.com.srl
+/data/ssl/pvs.ru.srl
+/scripts/install/local_deb/dump.7z
+/scripts/install/local_deb/min_files.7z
+/scripts/install/local_deb/backups/
+/scripts/install/local_deb/db/
+/scripts/install/local_deb/opt/
+/scripts/install/local_deb/pa/
+/scripts/install/local_deb/sso/
+/scripts/install/local_deb/import_db.sh
+/scripts/install/local_deb/install.sh
+
+/templates/500*.html
+/**/*.json
