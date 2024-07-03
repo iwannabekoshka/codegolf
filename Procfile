@@ -1,1 +1,0 @@
-web: gunicorn codegolf.wsgi
