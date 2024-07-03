@@ -62,7 +62,7 @@ formElem.addEventListener("submit", (e) => {
   e.preventDefault();
   const fields = formElem.elements;
   const formData = {
-    code: fields["code"].value,
+    code: fields["code"].value.trim(),
     code_lang: fields["code_lang"].value,
   };
 
@@ -83,10 +83,11 @@ formElem.addEventListener("submit", (e) => {
     const diffText = createTwoFilesPatch(
       "expected.txt",
       "actual.txt",
+      actual,
       expected,
-      actual
     );
 
+    // TODO Эта проверка - отстой, но это лучшее что я придумал за 5 секунд
     if (!diffText.includes("@@")) {
       diffElem.textContent = "Полное совпадение, юху!";
     } else {
