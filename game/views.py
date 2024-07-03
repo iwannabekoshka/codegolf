@@ -50,4 +50,5 @@ class CodegolfPageView(DetailView):
     })
 
 def get_code_output(lang: str, code: str):
+  # TODO Сделать запуск кода и реальную выдачу output-а
   return code
