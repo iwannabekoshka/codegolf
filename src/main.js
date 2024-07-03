@@ -63,6 +63,7 @@ formElem.addEventListener("submit", (e) => {
   const fields = formElem.elements;
   const formData = {
     code: fields["code"].value,
+    code_lang: fields["code_lang"].value,
   };
 
   fetch(window.location.href, {
