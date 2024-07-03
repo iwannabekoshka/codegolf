@@ -23,6 +23,7 @@ data/mongo/
 
 media/
 
+staticfiles/
 static/**/*.js*
 static/**/*.css*
 static/**/placeholders
