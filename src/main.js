@@ -65,9 +65,18 @@ formElem.addEventListener("submit", (e) => {
     code: fields["code"].value,
   };
 
-  sendData(formData).then((res) => {
-    const expected = res.expectedOutput;
-    const actual = res.userOutput;
+  fetch(window.location.href, {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': fields["csrfmiddlewaretoken"].value
+    },
+    body: JSON.stringify(formData)
+  })
+  .then((res) => { return res.json() })
+  .then((res) => {
+    const expected = res.expectedOutput.replace(/\r\n/g, "\n");
+    const actual = res.userOutput.replace(/\r\n/g, "\n");
 
     // Создание unified diff с помощью библиотеки diff
     const diffText = createTwoFilesPatch(
@@ -77,32 +86,23 @@ formElem.addEventListener("submit", (e) => {
       actual
     );
 
-    // Генерация и отображение диффа с помощью diff2html-ui
-    const targetElement = document.getElementById("diff");
-    const configuration = {
-      drawFileList: false,
-      matching: "lines",
-      outputFormat: "side-by-side",
-    };
-
-    const diff2htmlUi = new Diff2HtmlUI(targetElement, diffText, configuration);
-    diff2htmlUi.draw();
-
-    document.querySelector(".d2h-file-header").remove();
-    document.querySelectorAll(".d2h-diff-tbody").forEach(a => a.querySelector("tr").remove())
+    if (!diffText.includes("@@")) {
+      diffElem.textContent = "Полное совпадение, юху!";
+    } else {
+      const configuration = {
+        drawFileList: false,
+        matching: "lines",
+        outputFormat: "side-by-side",
+      };
+  
+      const diff2htmlUi = new Diff2HtmlUI(diffElem, diffText, configuration);
+      diff2htmlUi.draw();
+  
+      document.querySelector(".d2h-file-header")?.remove();
+      document.querySelectorAll(".d2h-diff-tbody").forEach(a => a.querySelector("tr")?.remove())
+    }
 
     expectedElem.textContent = res.expectedOutput;
     outputElem.textContent = res.userOutput;
   });
 });
-
-async function sendData(data) {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      resolve({
-        userOutput: "aboba\nabooba\nabab",
-        expectedOutput: "abeba\nabeoba\nabab",
-      });
-    }, 500);
-  });
-}

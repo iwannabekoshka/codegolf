@@ -11,3 +11,11 @@ class Task(models.Model):
   class Meta:
     verbose_name = "Задача"
     verbose_name_plural = "Задачи"
+
+
+class Answer(models.Model):
+  task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name='answers')
+  answer_text = models.TextField()
+
+  def __str__(self):
+    return f"{self.pk}"
