@@ -13,7 +13,9 @@
   <h1>{{ task.title }}</h1>
   <p>{{ task.description|safe }}</p>
 
-  <form action="/game/submit/" id="form-codegolf">
+  <form action="/" id="form-codegolf" method="POST">
+    {% csrf_token %}
+
     <input type="hidden" name="id" value="{{ task.id }}">
 
     <p>Chars: <span id="chars"></span></p>
