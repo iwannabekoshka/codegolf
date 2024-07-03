@@ -13,9 +13,17 @@ class Task(models.Model):
     verbose_name_plural = "Задачи"
 
 
+CODE_LANGUAGES = (
+  ('cpp', 'C++'),
+)
 class Answer(models.Model):
-  task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name='answers')
-  answer_text = models.TextField()
+  task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name='answers', verbose_name="Задача")
+  code = models.TextField(verbose_name="Ответ")
+  code_lang = models.CharField(max_length=255, verbose_name="Язык программирования", default=None, null=True, choices=CODE_LANGUAGES)
 
   def __str__(self):
     return f"{self.pk}"
+
+  class Meta:
+    verbose_name = "Ответ"
+    verbose_name_plural = "Ответы"

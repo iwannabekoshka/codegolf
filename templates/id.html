@@ -18,6 +18,12 @@
 
     <input type="hidden" name="id" value="{{ task.id }}">
 
+    <select name="code_lang" id="code_lang">
+      {% for lang in code_languages %}
+        <option value="cpp">C++</option>
+      {% endfor %}
+    </select>
+
     <p>Chars: <span id="chars"></span></p>
 
     <div id="editor" style="height: 300px;"></div>
