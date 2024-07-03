@@ -10,11 +10,11 @@
 </head>
 
 <body>
-  <h1>{{ task_title }}</h1>
-  <p>{{ task_description|safe }}</p>
+  <h1>{{ task.title }}</h1>
+  <p>{{ task.description|safe }}</p>
 
   <form action="/game/submit/" id="form-codegolf">
-    <input type="hidden" name="id" value="{{ task_id }}">
+    <input type="hidden" name="id" value="{{ task.id }}">
 
     <p>Chars: <span id="chars"></span></p>
 
