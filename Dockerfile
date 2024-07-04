@@ -21,4 +21,4 @@ RUN npm install && npm run build
 WORKDIR /code
 
 # Указываем команду по умолчанию для запуска сервера разработки Django
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8100"]
+# CMD ["python", "manage.py", "runserver", "0.0.0.0:8100"]
