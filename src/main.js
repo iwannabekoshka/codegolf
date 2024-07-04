@@ -34,10 +34,7 @@ let state = EditorState.create({
 int main(int argc, char* argv[]) {
     // Printing
     std::cout<<"Hello, World!"<<std::endl;
-}
-
-// Code is compiled with clang with -std=c++2b
-// See: https://clang.llvm.org/cxx_status.html`,
+}`,
   extensions: [
     basicSetup,
     language.of(cpp()),
@@ -55,15 +52,13 @@ int main(int argc, char* argv[]) {
   ],
 });
 
-
 let view = new EditorView({
   state,
   parent: editorElem,
 });
 
-charsElem.textContent = state.doc.toString().length || 0;
+charsElem.textContent = state.doc.toString().trim().length || 0;
 codeElem.value = state.doc.toString();
-
 
 window.addEventListener("keydown", function (event) {
   if (event.ctrlKey && event.key === "Enter") {
@@ -102,14 +97,43 @@ formElem.addEventListener("submit", (e) => {
   sendForm(e);
 });
 
+setInterval(() => {
+  fetch(window.location.href + "get_scoreboard/", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      document.getElementById("scoreboard").innerHTML = data.html;
+    })
+    .catch((error) => {
+      console.error("Error", error);
+    });
+}, 5000);
+
+const username = localStorage.getItem("username") || "";
+document.getElementById("username").value = username;
+
 function sendForm(e) {
   e.preventDefault();
-  
+
   const fields = formElem.elements;
+
+  const username = fields["username"].value;
+
   const formData = {
     code: fields["code"].value.trim(),
     code_lang: fields["code_lang"].value,
+    username:
+      username + "#" + document.getElementById("sessid").textContent.trim(),
+    code_len: state.doc.toString().trim().length,
   };
+
+  localStorage.setItem("username", username);
 
   fetch(window.location.href, {
     method: "POST",
@@ -137,8 +161,7 @@ function sendForm(e) {
         expected
       );
 
-      // TODO Эта проверка - отстой, но это лучшее что я придумал за 5 секунд
-      if (!diffText.includes("@@")) {
+      if (res.is_correct) {
         diffElem.textContent = "Полное совпадение, юху!";
 
         sectionOutputMessage.textContent = "ВЫ МОЛОДЦЫ! с:";

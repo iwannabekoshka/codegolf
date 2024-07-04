@@ -1,0 +1,7 @@
+
+{% for row in rows %}
+<tr>
+  <td>#{{ forloop.counter }}. {{ row.username }}</td>
+  <td>{{ row.code_len }}</td>
+</tr>
+{% endfor %}
