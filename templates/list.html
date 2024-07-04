@@ -4,16 +4,38 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
+
+  <link rel="stylesheet" href="https://cdn.pvs-studio.com/static/vite/css/main.css">
+  <link rel="stylesheet" href="/static/indexPage.css">
+  <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-  <h1>Tasks</h1>
+  <section id="breadcrumbs" class="bg-brand-gray-500 clr-neutral-100">
+    <div class="container">
+        <ul class="breadcrumbs">
+            <li style="color: white;">Tasks</li>
+        </ul>
+    </div>
+  </section>
 
-  <ul>
-    
-    {% for task in object_list %}
-      <li><a href="/game/{{ task.id }}">{{ task.title }}</a></li>
-    {% endfor %}
-      
-  </ul>
+  <section class="section" data-type="secondary" data-first="true">
+    <div class="container">
+      <h1 class="heading-1 mb-6">Tasks</h1>
+
+      <div class="row">
+        {% for task in object_list %}
+          <div class="col-12 col-md-6 col-lg-4">
+            <div class="card">
+              <div class="card-body h-100">
+                <h3 class="heading-3">
+                  <a href="/game/{{ task.id }}">{{ task.title }}</a>
+                </h3>
+              </div>
+            </div>
+          </div>
+        {% endfor %} 
+      </div>
+    </div>
+  </section>
 </body>
 </html>
