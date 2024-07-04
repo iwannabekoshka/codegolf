@@ -61,6 +61,14 @@ window.addEventListener("keydown", function (event) {
   }
 });
 
+// editorElem.addEventListener("keydown", function (event) {
+//   if (event.ctrlKey && event.key === "Enter") {
+//     event.preventDefault();
+
+//     submitElem.click();
+//   }
+// });
+
 langElem.addEventListener("change", (e) => {
   let lang;
   if (e.target.value === "python") {
