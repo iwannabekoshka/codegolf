@@ -6,6 +6,7 @@ from django.views.generic import ListView, DetailView
 import json
 
 from .models import Task, Answer, CODE_LANGUAGES
+from .utils import execute_cpp_code
 
 
 class CodegolfListView(ListView):
@@ -22,8 +23,8 @@ class CodegolfPageView(DetailView):
   template_name = 'id.html'
   context_object_name = 'task'
 
-  def get_context_data(self, *args, **kwargs):
-    context = super().get_context_data(*args, **kwargs)
+  def get_context_data(self, **kwargs):
+    context = super().get_context_data(**kwargs)
 
     context.update({
       'code_languages': CODE_LANGUAGES
@@ -36,19 +37,25 @@ class CodegolfPageView(DetailView):
     code = data.get('code')
     code_lang = data.get('code_lang')
 
-    if not code:
-      return JsonResponse({'status': 'error', 'message': 'Отсутствуют необходимые данные'}, status=400)
+    # if not code:
+    #   return JsonResponse({'status': 'error', 'message': 'Отсутствуют необходимые данные'}, status=400)
 
-    answer = Answer(task=self.get_object(), code=code, code_lang=code_lang)
-    answer.save()
-
-    return JsonResponse({
-      'status': 'success', 
-      'message': 'Ответ успешно создан',
+    exec_data = execute_cpp_code(code)
+    if 'error' in exec_data:
+      response = {
+        'status': 'error',
+        'message': f"{exec_data['error']}: {exec_data['details']}"
+      }
+    else:
+      response = {
+        'status': 'success',
+        'message': 'Ответ успешно создан',
+        'userOutput': exec_data['output']
+      }
+    response.update({
       'expectedOutput': self.get_object().expected_output,
-      'userOutput': get_code_output(code_lang, code)
     })
+    #answer = Answer(task=self.get_object(), code=code, code_lang=code_lang)
+    #answer.save()
 
-def get_code_output(lang: str, code: str):
-  # TODO Сделать запуск кода и реальную выдачу output-а
-  return code
+    return JsonResponse(response)
