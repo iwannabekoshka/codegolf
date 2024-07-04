@@ -6,49 +6,89 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
 
+  <link rel="stylesheet" href="https://cdn.pvs-studio.com/static/vite/css/main.css">
   <link rel="stylesheet" href="/static/indexPage.css">
+  <link rel="stylesheet" href="/static/style.css">
 </head>
 
 <body>
-  <h1>{{ task.title }}</h1>
-  <p>{{ task.description|safe }}</p>
-
-  <form action="{{ request.path }}" id="form-codegolf" method="POST">
-    {% csrf_token %}
-
-    <input type="hidden" name="id" value="{{ task.id }}">
-
-    <select name="code_lang" id="code_lang">
-      {% for lang in code_languages %}
-        <option value="{{ lang.0 }}">{{ lang.1 }}</option>
-      {% endfor %}
-    </select>
-
-    <p>Chars: <span id="chars"></span></p>
-
-    <div id="editor" style="height: 300px;"></div>
-    <textarea name="code" id="code" style="display: none;"></textarea>
-
-    <div>
-      <span>ctrl+enter</span>
-      <button type="submit" id="submit">Run</button>
+  <section id="breadcrumbs" class="bg-brand-gray-500 clr-neutral-100">
+    <div class="container">
+        <ul class="breadcrumbs">
+            <li><a href="/game/">Tasks</a></li>
+            <li style="color: var(--pvs-clr-neutral-300);">{{ task.title }}</li>
+        </ul>
     </div>
-  </form>
+  </section>
 
-  <div>
-    <h2>Yours output:</h2>
-    <pre id="output"></pre>
-  </div>
+  <section class="section" data-type="secondary" data-first="true">
+    <div class="container">
+      <h1 class="heading-1 mb-2">{{ task.title }}</h1>
 
-  <div>
-    <h2>Expected:</h2>
-    <pre id="expected"></pre>
-  </div>
+      <details open="open" class="mb-10">
+        <summary>Details</summary>
+        <p class="mt-2">{{ task.description|safe }}</p>
+      </details>
 
-  <div>
-    <h2>Diff:</h2>
-    <div id="diff"></div>
-  </div>
+      <form action="{{ request.path }}" id="form-codegolf" method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="id" value="{{ task.id }}">
+    
+        <select name="code_lang" id="code_lang">
+          {% for lang in code_languages %}
+            <option value="{{ lang.0 }}">{{ lang.1 }}</option>
+          {% endfor %}
+        </select>
+    
+        <p><span id="chars"></span> chars</p>
+    
+        <div id="editor" style="height: 300px; margin-bottom: 10px;"></div>
+        <textarea name="code" id="code" style="display: none;"></textarea>
+    
+        <div class="row">
+          <div class="col-12 col-md-3 col-lg-3">
+            <p style="margin-bottomt: 5px;">Ctrl+Enter</p>
+            <button class="button w-100" data-type="secondary" type="submit" id="submit">
+              <span>Run!</span>
+
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path d="M10 0C8.02261 9.97651e-07 6.08961 0.586239 4.44534 1.68461C2.80107 2.78298 1.51934 4.34417 0.762169 6.17085C0.00499871 7.99752 -0.193621 10.0077 0.191418 11.9472C0.576457 13.8867 1.52787 15.6686 2.92539 17.0675C4.32291 18.4664 6.1038 19.4196 8.04295 19.8066C9.98209 20.1936 11.9924 19.997 13.8199 19.2417C15.6473 18.4863 17.2098 17.2062 18.3098 15.563C19.4098 13.9198 19.998 11.9874 20 10.01C20 7.35695 18.9468 4.81238 17.0717 2.93542C15.1966 1.05846 12.6531 0.00266241 10 0ZM16.0271 15.997C14.6344 17.3774 12.8065 18.2327 10.8543 18.4174C8.90206 18.6021 6.94616 18.1048 5.31927 17.01C3.69238 15.9153 2.495 14.2908 1.93079 12.4128C1.36659 10.5347 1.47042 8.51928 2.22463 6.7092C2.97883 4.89911 4.33682 3.40621 6.06759 2.48445C7.79836 1.56268 9.79502 1.26898 11.7179 1.65332C13.6408 2.03765 15.3712 3.07627 16.6146 4.5925C17.8581 6.10874 18.5379 8.00894 18.5384 9.96986C18.5362 11.0925 18.3109 12.2034 17.8755 13.2381C17.44 14.2728 16.8032 15.2106 16.002 15.997H16.0271Z" fill="white"/>
+                <path d="M13.8523 9.04068L9.39226 5.56504C9.20792 5.41684 8.98492 5.32466 8.74974 5.29946C8.51455 5.27425 8.27708 5.31708 8.06552 5.42286C7.85397 5.52864 7.67722 5.69292 7.55627 5.89619C7.43532 6.09946 7.37526 6.33317 7.38322 6.56956L7.41336 13.4957C7.41478 13.7268 7.48095 13.9528 7.60436 14.1481C7.72776 14.3434 7.90346 14.5002 8.1115 14.6007C8.2801 14.6841 8.46583 14.7271 8.65394 14.7263C8.92844 14.7241 9.19473 14.6324 9.41235 14.4651L13.8523 11.0146C14.0006 10.8985 14.1205 10.7502 14.2029 10.581C14.2854 10.4117 14.3282 10.2259 14.3282 10.0377C14.3282 9.8494 14.2854 9.66359 14.2029 9.49434C14.1205 9.32509 14.0006 9.17682 13.8523 9.06077V9.04068ZM8.93018 12.9131L8.90507 7.09191L12.6519 10.01L8.93018 12.9131Z" fill="white"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </form>    
+    </div>
+  </section>
+
+  <section class="section" id="section-output" style="display: none;">
+    <div class="container">
+      <div class="flow-10">
+        <div>
+          <h2 class="heading-2" id="output-message"></h2>
+        </div>
+
+        <div>
+          <h2 class="heading-2 mb-2">Yours output</h2>
+
+          <pre class="output" id="output"></pre>
+        </div>
+
+        <div>
+          <h2 class="heading-2 mb-2">Expected output</h2>
+
+          <pre class="output" id="expected"></pre>
+        </div>
+
+        <div>
+          <h2 class="heading-2 mb-2">Diff</h2>
+
+          <div id="diff"></div>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <script type="module" src="/static/indexPage.js"></script>
 </body>
