@@ -27,25 +27,6 @@ data/mongo/
 media/
 
 staticfiles/
-static/**/*.js*
-static/**/*.css*
-static/**/placeholders
-static/admin
-static/django_tinymce
-static/epiceditor
-static/front
-static/print
-static/summernote
-static/tinymce
-static/to-markdown
-static/wym
-static/jquery.ajaxSubmit.min.js
-static/tinymce.css
-static/style.css*
-static/vite
-static/js
-static/styles
-static/games
 
 # Перенесены из CDN-ов
 !static/lazyload.min.js
