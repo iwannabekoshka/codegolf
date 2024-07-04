@@ -97,7 +97,12 @@ formElem.addEventListener("submit", (e) => {
   sendForm(e);
 });
 
+setScoreboard();
 setInterval(() => {
+  setScoreboard();
+}, 5000);
+
+function setScoreboard() {
   fetch(window.location.href + "get_scoreboard/", {
     method: "GET",
     headers: {
@@ -113,7 +118,7 @@ setInterval(() => {
     .catch((error) => {
       console.error("Error", error);
     });
-}, 5000);
+}
 
 const username = localStorage.getItem("username") || "";
 document.getElementById("username").value = username;
