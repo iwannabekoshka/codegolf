@@ -14,8 +14,8 @@ cpp_input_data = "Hello, input data!\n"
 
 
 CODE_LANGUAGES = (
+  ('cpp', 'C++'),
   ('python', 'Python'),
   ('javascript', 'JS'),
-  ('cpp', 'C++'),
   ('c', 'C'),
 )
