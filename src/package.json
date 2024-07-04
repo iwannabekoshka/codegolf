@@ -12,6 +12,10 @@
     "vite": "^5.3.1"
   },
   "dependencies": {
+    "@codemirror/lang-javascript": "^6.2.2",
+    "@codemirror/lang-python": "^6.1.6",
+    "@codemirror/state": "^6.4.1",
+    "codemirror": "^6.0.1",
     "diff-match-patch": "^1.0.5",
     "diff2html": "^3.4.48",
     "monaco-editor": "^0.50.0"
