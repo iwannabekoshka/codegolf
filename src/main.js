@@ -58,7 +58,7 @@ let view = new EditorView({
   parent: editorElem,
 });
 
-charsElem.textContent = state.doc.toString().length || 0;
+charsElem.textContent = state.doc.toString().trim().length || 0;
 codeElem.value = state.doc.toString();
 
 window.addEventListener("keydown", function (event) {
@@ -112,6 +112,7 @@ function sendForm(e) {
     code: fields["code"].value.trim(),
     code_lang: fields["code_lang"].value,
     username: username +  "#" + document.getElementById("sessid").textContent.trim(),
+    code_len: state.doc.toString().trim().length,
   }
 
   localStorage.setItem("username", username);

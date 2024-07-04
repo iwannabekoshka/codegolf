@@ -6,9 +6,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
 
+  <link rel="stylesheet" href="https://cdn.pvs-studio.com/static/style.css">
   <link rel="stylesheet" href="https://cdn.pvs-studio.com/static/vite/css/main.css">
   <link rel="stylesheet" href="/static/indexPage.css">
   <link rel="stylesheet" href="/static/style.css">
+
+  <style>
+    .table-hash tr {
+      display: grid;
+      grid-template-columns: var(--columns, minmax(100px, 1fr) minmax(100px, 1fr) 0px);
+    }
+  </style>
 </head>
 
 <body>
@@ -59,9 +67,28 @@
               #<span id="sessid">{{ request.session.session_key|slice:3 }}</span>
           </div>
         </div>
-    
-        <div id="editor" style="height: 300px; margin-bottom: 10px;"></div>
-        <textarea name="code" id="code" style="display: none;"></textarea>
+
+        <div class="mb-6">
+          <div class="row g-2">
+            <div class="col-12 col-lg-8">
+              <div id="editor" style="height: 300px; margin-bottom: 10px;"></div>
+              <textarea name="code" id="code" style="display: none;"></textarea>
+            </div>
+            <div class="col-12 col-lg-4">
+              <table class="table-hash">
+                <thead>
+                  <tr>
+                    <th scope="col">Username</th>
+                    <th scope="col">Chars</th>
+                  </tr>
+                </thead>
+                <tbody id="scoreboard">
+                  {% include 'table_rows.html' %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
     
         <div class="row">
           <div class="col-12 col-md-4 col-lg-3">
