@@ -9,6 +9,11 @@ import { EditorState, Compartment } from "@codemirror/state";
 import { python } from "@codemirror/lang-python";
 import { javascript } from "@codemirror/lang-javascript";
 
+import { basicSetup, EditorView } from "codemirror";
+import { EditorState, Compartment } from "@codemirror/state";
+import { python } from "@codemirror/lang-python";
+import { javascript } from "@codemirror/lang-javascript";
+
 const editorElem = document.getElementById("editor");
 const codeElem = document.getElementById("code");
 const langElem = document.getElementById("code_lang");
@@ -82,6 +87,8 @@ function sendForm(e) {
   const formData = {
     code: fields["code"].value.trim(),
     code_lang: fields["code_lang"].value,
+    code: fields["code"].value.trim(),
+    code_lang: fields["code_lang"].value,
   };
 
   fetch(window.location.href, {
@@ -116,10 +123,34 @@ function sendForm(e) {
           matching: "lines",
           outputFormat: "side-by-side",
         };
+      // Создание unified diff с помощью библиотеки diff
+      const diffText = createTwoFilesPatch(
+        "expected.txt",
+        "actual.txt",
+        actual,
+        expected
+      );
+
+      // TODO Эта проверка - отстой, но это лучшее что я придумал за 5 секунд
+      if (!diffText.includes("@@")) {
+        diffElem.textContent = "Полное совпадение, юху!";
+      } else {
+        const configuration = {
+          drawFileList: false,
+          matching: "lines",
+          outputFormat: "side-by-side",
+        };
 
         const diff2htmlUi = new Diff2HtmlUI(diffElem, diffText, configuration);
         diff2htmlUi.draw();
+        const diff2htmlUi = new Diff2HtmlUI(diffElem, diffText, configuration);
+        diff2htmlUi.draw();
 
+        document.querySelector(".d2h-file-header")?.remove();
+        document
+          .querySelectorAll(".d2h-diff-tbody")
+          .forEach((a) => a.querySelector("tr")?.remove());
+      }
         document.querySelector(".d2h-file-header")?.remove();
         document
           .querySelectorAll(".d2h-diff-tbody")
