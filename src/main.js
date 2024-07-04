@@ -52,7 +52,6 @@ int main(int argc, char* argv[]) {
   ],
 });
 
-
 let view = new EditorView({
   state,
   parent: editorElem,
@@ -98,22 +97,41 @@ formElem.addEventListener("submit", (e) => {
   sendForm(e);
 });
 
+setInterval(() => {
+  fetch(window.location.href + "get_scoreboard/", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      document.getElementById("scoreboard").innerHTML = data.html;
+    })
+    .catch((error) => {
+      console.error("Error", error);
+    });
+}, 5000);
+
 const username = localStorage.getItem("username") || "";
 document.getElementById("username").value = username;
 
 function sendForm(e) {
   e.preventDefault();
-  
+
   const fields = formElem.elements;
 
-  const username = fields["username"].value
+  const username = fields["username"].value;
 
   const formData = {
     code: fields["code"].value.trim(),
     code_lang: fields["code_lang"].value,
-    username: username +  "#" + document.getElementById("sessid").textContent.trim(),
+    username:
+      username + "#" + document.getElementById("sessid").textContent.trim(),
     code_len: state.doc.toString().trim().length,
-  }
+  };
 
   localStorage.setItem("username", username);
 
