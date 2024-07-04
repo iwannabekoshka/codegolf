@@ -14,7 +14,8 @@ class Task(models.Model):
 
 
 CODE_LANGUAGES = (
-  ('cpp', 'C++'),
+  ('python', 'Python'),
+  ('javascript', 'JS'),
 )
 class Answer(models.Model):
   task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name='answers', verbose_name="Задача")
