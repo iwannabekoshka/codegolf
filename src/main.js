@@ -8,6 +8,7 @@ import { basicSetup, EditorView } from "codemirror";
 import { EditorState, Compartment } from "@codemirror/state";
 import { python } from "@codemirror/lang-python";
 import { javascript } from "@codemirror/lang-javascript";
+import { cpp } from "@codemirror/lang-cpp";
 import { oneDark } from "@codemirror/theme-one-dark";
 
 const editorElem = document.getElementById("editor");
@@ -30,7 +31,7 @@ const themeConfig = new Compartment();
 let state = EditorState.create({
   extensions: [
     basicSetup,
-    language.of(python()),
+    language.of(cpp()),
     tabSize.of(EditorState.tabSize.of(4)),
     oneDark,
 

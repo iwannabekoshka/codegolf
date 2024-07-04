@@ -34,7 +34,7 @@
         {% csrf_token %}
         <input type="hidden" name="id" value="{{ task.id }}">
     
-        <select name="code_lang" id="code_lang">
+        <select name="code_lang" id="code_lang" style="display: none;">
           {% for lang in code_languages %}
             <option value="{{ lang.0 }}">{{ lang.1 }}</option>
           {% endfor %}
