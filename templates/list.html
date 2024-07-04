@@ -5,11 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
 
+  <title>PVS-Studio | Codegolf</title>
+
+  <link rel="icon" href="https://cdn.pvs-studio.com/static/favicon.ico" type="image/x-icon">
+
   <link rel="stylesheet" href="https://cdn.pvs-studio.com/static/vite/css/main.css">
   <link rel="stylesheet" href="/static/indexPage.css">
   <link rel="stylesheet" href="/static/style.css">
 </head>
-<body>
+<body class="bg-brand-gray-500">
   <section id="breadcrumbs" class="bg-brand-gray-500 clr-neutral-100">
     <div class="container">
         <ul class="breadcrumbs">
@@ -25,13 +29,13 @@
       <div class="row g-6">
         {% for task in object_list %}
           <div class="col-12 col-md-6 col-lg-4">
-            <div class="card">
+            <a href="/game/{{ task.id }}" class="card">
               <div class="card-body h-100">
                 <h3 class="heading-3">
-                  <a href="/game/{{ task.id }}">{{ task.title }}</a>
+                  {{ task.title }}
                 </h3>
               </div>
-            </div>
+            </a>
           </div>
         {% endfor %} 
       </div>
