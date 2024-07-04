@@ -8,6 +8,7 @@ import { basicSetup, EditorView } from "codemirror";
 import { EditorState, Compartment } from "@codemirror/state";
 import { python } from "@codemirror/lang-python";
 import { javascript } from "@codemirror/lang-javascript";
+import { cpp } from "@codemirror/lang-cpp";
 import { oneDark } from "@codemirror/theme-one-dark";
 
 const editorElem = document.getElementById("editor");
@@ -28,9 +29,18 @@ let language = new Compartment(),
 const themeConfig = new Compartment();
 
 let state = EditorState.create({
+  doc: `#include <iostream>
+
+int main(int argc, char* argv[]) {
+    // Printing
+    std::cout<<"Hello, World!"<<std::endl;
+}
+
+// Code is compiled with clang with -std=c++2b
+// See: https://clang.llvm.org/cxx_status.html`,
   extensions: [
     basicSetup,
-    language.of(python()),
+    language.of(cpp()),
     tabSize.of(EditorState.tabSize.of(4)),
     oneDark,
 
@@ -45,12 +55,15 @@ let state = EditorState.create({
   ],
 });
 
-charsElem.textContent = state.doc.toString().length || 0;
 
 let view = new EditorView({
   state,
   parent: editorElem,
 });
+
+charsElem.textContent = state.doc.toString().length || 0;
+codeElem.value = state.doc.toString();
+
 
 window.addEventListener("keydown", function (event) {
   if (event.ctrlKey && event.key === "Enter") {
@@ -59,6 +72,14 @@ window.addEventListener("keydown", function (event) {
     submitElem.click();
   }
 });
+
+// editorElem.addEventListener("keydown", function (event) {
+//   if (event.ctrlKey && event.key === "Enter") {
+//     event.preventDefault();
+
+//     submitElem.click();
+//   }
+// });
 
 langElem.addEventListener("change", (e) => {
   let lang;
@@ -76,7 +97,7 @@ langElem.addEventListener("change", (e) => {
 });
 
 formElem.addEventListener("submit", (e) => {
-  // codeElem.value = view.state.doc.toString();
+  codeElem.value = view.state.doc.toString();
 
   sendForm(e);
 });
@@ -86,8 +107,6 @@ function sendForm(e) {
   
   const fields = formElem.elements;
   const formData = {
-    code: fields["code"].value.trim(),
-    code_lang: fields["code_lang"].value,
     code: fields["code"].value.trim(),
     code_lang: fields["code_lang"].value,
   };
@@ -104,8 +123,8 @@ function sendForm(e) {
       return res.json();
     })
     .then((res) => {
-      const expected = res.expectedOutput.replace(/\r\n/g, "\n");
-      const actual = res.userOutput.replace(/\r\n/g, "\n");
+      const expected = res.expectedOutput.replace(/\r\n/g, "\n").trim();
+      const actual = res.userOutput.replace(/\r\n/g, "\n").trim();
 
       console.log(expected);
       console.log(actual);
