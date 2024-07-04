@@ -30,6 +30,13 @@ summary {
 
   color: var(--pvs-clr-neutral-100);
   background-color: var(--pvs-clr-brand-gray-500);
+
+  overflow: auto;
+}
+
+.output,
+#diff {
+  max-height: 150px;
 }
 
 .success {
