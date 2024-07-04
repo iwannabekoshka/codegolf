@@ -34,10 +34,7 @@ let state = EditorState.create({
 int main(int argc, char* argv[]) {
     // Printing
     std::cout<<"Hello, World!"<<std::endl;
-}
-
-// Code is compiled with clang with -std=c++2b
-// See: https://clang.llvm.org/cxx_status.html`,
+}`,
   extensions: [
     basicSetup,
     language.of(cpp()),
