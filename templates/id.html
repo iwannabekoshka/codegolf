@@ -40,7 +40,25 @@
           {% endfor %}
         </select>
     
-        <p><span id="chars"></span> chars</p>
+        <div class="row row-cols-auto justify-content-between mb-2">
+          <div class="col">
+            <p><span id="chars"></span> chars</p>
+          </div>
+
+          <div class="col">
+            <input 
+              type="text" 
+              placeholder="Username"
+              name="username" 
+              id="username"
+              maxlength="10" 
+              minlength="3"
+              required
+              style="width: 150px;"
+            >
+              #<span id="sessid">{{ request.session.session_key|slice:3 }}</span>
+          </div>
+        </div>
     
         <div id="editor" style="height: 300px; margin-bottom: 10px;"></div>
         <textarea name="code" id="code" style="display: none;"></textarea>

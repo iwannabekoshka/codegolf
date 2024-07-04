@@ -61,7 +61,6 @@ let view = new EditorView({
 charsElem.textContent = state.doc.toString().length || 0;
 codeElem.value = state.doc.toString();
 
-
 window.addEventListener("keydown", function (event) {
   if (event.ctrlKey && event.key === "Enter") {
     event.preventDefault();
@@ -99,14 +98,23 @@ formElem.addEventListener("submit", (e) => {
   sendForm(e);
 });
 
+const username = localStorage.getItem("username") || "";
+document.getElementById("username").value = username;
+
 function sendForm(e) {
   e.preventDefault();
   
   const fields = formElem.elements;
+
+  const username = fields["username"].value
+
   const formData = {
     code: fields["code"].value.trim(),
     code_lang: fields["code_lang"].value,
-  };
+    username: username +  "#" + document.getElementById("sessid").textContent.trim(),
+  }
+
+  localStorage.setItem("username", username);
 
   fetch(window.location.href, {
     method: "POST",
