@@ -123,8 +123,8 @@ function sendForm(e) {
       return res.json();
     })
     .then((res) => {
-      const expected = res.expectedOutput.replace(/\r\n/g, "\n");
-      const actual = res.userOutput.replace(/\r\n/g, "\n");
+      const expected = res.expectedOutput.replace(/\r\n/g, "\n").trim();
+      const actual = res.userOutput.replace(/\r\n/g, "\n").trim();
 
       console.log(expected);
       console.log(actual);
