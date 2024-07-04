@@ -83,8 +83,7 @@ formElem.addEventListener("submit", (e) => {
 
 function sendForm(e) {
   e.preventDefault();
-  console.log(e);
-
+  
   const fields = formElem.elements;
   const formData = {
     code: fields["code"].value.trim(),
@@ -107,6 +106,9 @@ function sendForm(e) {
     .then((res) => {
       const expected = res.expectedOutput.replace(/\r\n/g, "\n");
       const actual = res.userOutput.replace(/\r\n/g, "\n");
+
+      console.log(expected);
+      console.log(actual);
 
       // Создание unified diff с помощью библиотеки diff
       const diffText = createTwoFilesPatch(

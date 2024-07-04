@@ -3,5 +3,39 @@
 }
 
 summary {
+  padding-inline: 5px;
+  border: 1px dashed #fff;
+
   cursor: pointer;
+}
+
+#diff :is(td, .d2h-code-side-emptyplaceholder, .d2h-code-line-ctn) {
+  color: var(--pvs-clr-neutral-100);
+  background-color: var(--pvs-clr-brand-gray-500);
+}
+
+#diff .d2h-file-side-diff {
+  overflow-x: auto;
+}
+
+#diff :is(del, ins) {
+  color: var(--pvs-clr-neutral-900);
+}
+
+.output {
+  display: block;
+  width: 100%;
+  padding-block: 10px;
+  padding-left: 22px;
+
+  color: var(--pvs-clr-neutral-100);
+  background-color: var(--pvs-clr-brand-gray-500);
+}
+
+.success {
+  color: var(--pvs-clr-brand-green-500)
+}
+
+.error {
+  color: salmon;
 }
