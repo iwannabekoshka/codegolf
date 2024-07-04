@@ -29,6 +29,15 @@ let language = new Compartment(),
 const themeConfig = new Compartment();
 
 let state = EditorState.create({
+  doc: `#include <iostream>
+
+int main(int argc, char* argv[]) {
+    // Printing
+    std::cout<<"Hello, World!"<<std::endl;
+}
+
+// Code is compiled with clang with -std=c++2b
+// See: https://clang.llvm.org/cxx_status.html`,
   extensions: [
     basicSetup,
     language.of(cpp()),
@@ -46,12 +55,15 @@ let state = EditorState.create({
   ],
 });
 
-charsElem.textContent = state.doc.toString().length || 0;
 
 let view = new EditorView({
   state,
   parent: editorElem,
 });
+
+charsElem.textContent = state.doc.toString().length || 0;
+codeElem.value = state.doc.toString();
+
 
 window.addEventListener("keydown", function (event) {
   if (event.ctrlKey && event.key === "Enter") {
@@ -85,7 +97,7 @@ langElem.addEventListener("change", (e) => {
 });
 
 formElem.addEventListener("submit", (e) => {
-  // codeElem.value = view.state.doc.toString();
+  codeElem.value = view.state.doc.toString();
 
   sendForm(e);
 });
@@ -95,8 +107,6 @@ function sendForm(e) {
   
   const fields = formElem.elements;
   const formData = {
-    code: fields["code"].value.trim(),
-    code_lang: fields["code_lang"].value,
     code: fields["code"].value.trim(),
     code_lang: fields["code_lang"].value,
   };
