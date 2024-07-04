@@ -13,6 +13,7 @@ const editorElem = document.getElementById("editor");
 const codeElem = document.getElementById("code");
 const langElem = document.getElementById("code_lang");
 const formElem = document.getElementById("form-codegolf");
+const submitElem = document.getElementById("submit");
 const charsElem = document.getElementById("chars");
 const expectedElem = document.getElementById("expected");
 const outputElem = document.getElementById("output");
@@ -43,6 +44,14 @@ let view = new EditorView({
   parent: editorElem,
 });
 
+window.addEventListener('keydown', function(event) {
+  if (event.ctrlKey && event.key === 'Enter') {
+    event.preventDefault();
+    
+    submitElem.click();
+  }
+});
+
 langElem.addEventListener("change", (e) => {
   let lang;
   if (e.target.value === "python") {
@@ -59,9 +68,15 @@ langElem.addEventListener("change", (e) => {
 });
 
 formElem.addEventListener("submit", (e) => {
-  e.preventDefault();
 
   // codeElem.value = view.state.doc.toString();
+
+  sendForm(e);
+});
+
+function sendForm(e) {
+  e.preventDefault();
+  console.log(e);
 
   const fields = formElem.elements;
   const formData = {
@@ -114,4 +129,4 @@ formElem.addEventListener("submit", (e) => {
       expectedElem.textContent = res.expectedOutput;
       outputElem.textContent = res.userOutput;
     });
-});
+}

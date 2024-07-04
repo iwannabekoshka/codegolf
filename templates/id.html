@@ -13,7 +13,7 @@
   <h1>{{ task.title }}</h1>
   <p>{{ task.description|safe }}</p>
 
-  <form action="/" id="form-codegolf" method="POST">
+  <form action="{{ request.path }}" id="form-codegolf" method="POST">
     {% csrf_token %}
 
     <input type="hidden" name="id" value="{{ task.id }}">
@@ -29,7 +29,7 @@
     <div id="editor" style="height: 300px;"></div>
     <textarea name="code" id="code" style="display: none;"></textarea>
 
-    <button type="submit">Run</button>
+    <button type="submit" id="submit">Run</button>
   </form>
 
   <div>
