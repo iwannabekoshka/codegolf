@@ -143,8 +143,7 @@ function sendForm(e) {
         expected
       );
 
-      // TODO Эта проверка - отстой, но это лучшее что я придумал за 5 секунд
-      if (!diffText.includes("@@")) {
+      if (res.is_correct) {
         diffElem.textContent = "Полное совпадение, юху!";
 
         sectionOutputMessage.textContent = "ВЫ МОЛОДЦЫ! с:";
