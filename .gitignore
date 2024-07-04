@@ -76,3 +76,5 @@ docker-compose.yml
 
 /templates/500*.html
 /**/*.json
+
+db.sqlite3

@@ -44,12 +44,11 @@ class CodegolfPageView(DetailView):
     if 'error' in exec_data:
       response = {
         'status': 'error',
-        'message': f"{exec_data['error']}: {exec_data['details']}"
+        'userOutput': f"{exec_data['error']}: {exec_data['details']}"
       }
     else:
       response = {
         'status': 'success',
-        'message': 'Ответ успешно создан',
         'userOutput': exec_data['output']
       }
     response.update({
