@@ -1,12 +1,11 @@
 from django.db import connection
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.shortcuts import get_object_or_404, Http404, render
 from django.views.generic.base import TemplateView
 from django.views.generic import ListView, DetailView
 from django.template.loader import render_to_string
 from django.db.models import F, Window
 from django.db.models.functions import RowNumber
-from django.db.models import Min, OuterRef, Subquery
 
 import json
 
@@ -87,37 +86,21 @@ def get_scoreboard(request, pk):
         {'username': 'bobster', 'code_len': '11'},
         # Добавьте другие строки по необходимости
       ]
+    if not Task.objects.filter(pk=pk).exists():
+        return HttpResponse(status=400)
+    query = f'''
+        SELECT id, task_id, username, is_correct, MIN(code_len) as code_len
+        FROM game_answer
+        WHERE code_len > 0 and is_correct = 1 and task_id = {pk}
+        GROUP BY username
+        ORDER BY code_len
+        LIMIT 5
+    '''
 
-    # Предположим, что у вас есть pk задачи
-    task_pk = pk  # замените это на реальный pk
+    answers = Answer.objects.raw(query)
 
-    # Находим минимальные значения code_len для каждого пользователя
-    min_code_lens = (
-        Answer.objects.filter(task_id=task_pk, is_correct=True)
-        .values('username')
-        .annotate(min_code_len=Min('code_len'))
-    )
+    top_5 = [{'username': answer.username, 'code_len': answer.code_len} for answer in answers]
 
-    # Собираем уникальных пользователей с минимальными значениями code_len
-    unique_users_with_min_code_len = []
-    seen_users = set()
-
-    for answer in min_code_lens:
-        username = answer['username']
-        if username not in seen_users:
-            seen_users.add(username)
-            unique_users_with_min_code_len.append(
-                Answer.objects.filter(
-                    task_id=task_pk,
-                    is_correct=True,
-                    username=username,
-                    code_len=answer['min_code_len']
-                ).first()
-            )
-        
-        # Если мы нашли 5 уникальных пользователей, завершаем цикл
-        if len(unique_users_with_min_code_len) >= 5:
-            break
-
-    html_content = render_to_string('table_rows.html', {'rows': unique_users_with_min_code_len})
+    html_content = render_to_string('table_rows.html', {'rows': top_5})
+    print(top_5, '||')
     return JsonResponse({'html': html_content})
