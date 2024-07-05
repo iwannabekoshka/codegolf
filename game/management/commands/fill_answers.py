@@ -33,7 +33,7 @@ class Command(BaseCommand):
 
         answer_list = []
         for i in range(100):
-            code_len = random.randint(20, 100)
+            code_len = random.randint(200, 1000)
             answer_list.append(
                 Answer(
                     task_id=random.choice(task_id_list),

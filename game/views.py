@@ -80,12 +80,7 @@ class CodegolfPageView(DetailView):
 
 
 def get_scoreboard(request, pk):
-    top_5 = [
-        {'username': 'ABOBA', 'code_len': '1'},
-        {'username': 'abeba', 'code_len': '10'},
-        {'username': 'bobster', 'code_len': '11'},
-        # Добавьте другие строки по необходимости
-      ]
+
     if not Task.objects.filter(pk=pk).exists():
         return HttpResponse(status=400)
     query = f'''
@@ -102,5 +97,4 @@ def get_scoreboard(request, pk):
     top_5 = [{'username': answer.username, 'code_len': answer.code_len} for answer in answers]
 
     html_content = render_to_string('table_rows.html', {'rows': top_5})
-    print(top_5, '||')
     return JsonResponse({'html': html_content})
