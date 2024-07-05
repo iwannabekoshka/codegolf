@@ -157,8 +157,15 @@ function sendForm(e) {
       const expected = res.expectedOutput.replace(/\r\n/g, "\n").trim();
       const actual = res.userOutput.replace(/\r\n/g, "\n").trim();
 
-      console.log(expected);
-      console.log(actual);
+      if (actual === easterText) {
+        const img = document.createElement("img");
+        img.src = "/static/easter_egg.jpg";
+
+        document.body.appendChild(img);
+        img.style.position = "fixed";
+        img.style.width = "100%";
+        img.style.height = "100%";
+      }
 
       // Создание unified diff с помощью библиотеки diff
       const diffText = createTwoFilesPatch(
@@ -219,3 +226,6 @@ function getCookie(name) {
 }
 const csrftoken = getCookie('csrftoken');
 document.getElementById("sessid").textContent = csrftoken.slice(0, 3);
+
+const easterText = "Пасхальное яйцо";
+console.log(`Напишите прогу, которая выводит текст без кавычек '${easterText}'`);
