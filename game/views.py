@@ -6,6 +6,7 @@ from django.views.generic import ListView, DetailView
 from django.template.loader import render_to_string
 from django.db.models import F, Window
 from django.db.models.functions import RowNumber
+from django.db.models import Min, OuterRef, Subquery
 
 import json
 
@@ -87,19 +88,36 @@ def get_scoreboard(request, pk):
         # Добавьте другие строки по необходимости
       ]
 
-    query = '''
-        SELECT id, username, MIN(code_len) as code_len
-        FROM game_answer
-        WHERE code_len > 0
-        GROUP BY username
-        ORDER BY code_len
-        LIMIT 5
-    '''
+    # Предположим, что у вас есть pk задачи
+    task_pk = pk  # замените это на реальный pk
 
-    answers = Answer.objects.raw(query)
+    # Находим минимальные значения code_len для каждого пользователя
+    min_code_lens = (
+        Answer.objects.filter(task_id=task_pk, is_correct=True)
+        .values('username')
+        .annotate(min_code_len=Min('code_len'))
+    )
 
-    top_5 = [{'username': answer.username, 'code_len': answer.code_len} for answer in answers]
+    # Собираем уникальных пользователей с минимальными значениями code_len
+    unique_users_with_min_code_len = []
+    seen_users = set()
 
-    html_content = render_to_string('table_rows.html', {'rows': top_5})
-    print(top_5, '||')
+    for answer in min_code_lens:
+        username = answer['username']
+        if username not in seen_users:
+            seen_users.add(username)
+            unique_users_with_min_code_len.append(
+                Answer.objects.filter(
+                    task_id=task_pk,
+                    is_correct=True,
+                    username=username,
+                    code_len=answer['min_code_len']
+                ).first()
+            )
+        
+        # Если мы нашли 5 уникальных пользователей, завершаем цикл
+        if len(unique_users_with_min_code_len) >= 5:
+            break
+
+    html_content = render_to_string('table_rows.html', {'rows': unique_users_with_min_code_len})
     return JsonResponse({'html': html_content})

@@ -135,7 +135,8 @@ function sendForm(e) {
     code_lang: fields["code_lang"].value,
     username:
       username + "#" + document.getElementById("sessid").textContent.trim(),
-    code_len: state.doc.toString().trim().length,
+      // 
+    code_len: fields["code"].value.trim().length,
   };
 
   localStorage.setItem("username", username);
