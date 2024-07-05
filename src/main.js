@@ -113,6 +113,7 @@ function setScoreboard() {
       return response.json();
     })
     .then((data) => {
+      document.getElementById("scoreboard").textContent = ""
       document.getElementById("scoreboard").innerHTML = data.html;
     })
     .catch((error) => {
