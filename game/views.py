@@ -65,6 +65,7 @@ class CodegolfPageView(DetailView):
                 code_result=output,
                 username=username,
                 is_correct=is_correct,
+                code_len=code_len,
             )
             response = {
                 'status': 'success',
