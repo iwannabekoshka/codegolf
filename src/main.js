@@ -129,6 +129,11 @@ function sendForm(e) {
 
   const fields = formElem.elements;
 
+  if (fields["code"].value.trim().length > 1000) {
+    alert("Слишком многа буков");
+    return;
+  }
+
   const username = fields["username"].value;
 
   const formData = {
@@ -136,11 +141,12 @@ function sendForm(e) {
     code_lang: fields["code_lang"].value,
     username:
       username + "#" + document.getElementById("sessid").textContent.trim(),
-      // 
     code_len: fields["code"].value.trim().length,
   };
 
   localStorage.setItem("username", username);
+
+  submitElem.setAttribute("disabled", "disabled");
 
   fetch(window.location.href, {
     method: "POST",
@@ -206,6 +212,9 @@ function sendForm(e) {
 
       sectionOutputElem.style.display = "block";
       sectionOutputElem.scrollIntoView(true);
+    })
+    .finally(() => {
+      submitElem.removeAttribute("disabled");
     });
 }
 
