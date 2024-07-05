@@ -5,6 +5,6 @@ from . import views
 
 urlpatterns = [
     path("", views.CodegolfListView.as_view(), name="game_list"),
-    path("<slug:pk>/", csrf_exempt(views.CodegolfPageView.as_view()), name="game_task"),
-    path("<slug:pk>/get_scoreboard/", views.get_scoreboard, name="game_task"),
+    path("<int:pk>/", csrf_exempt(views.CodegolfPageView.as_view()), name="game_task"),
+    path("<int:pk>/get_scoreboard/", views.get_scoreboard, name="game_task"),
 ]

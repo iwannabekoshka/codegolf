@@ -6,7 +6,6 @@ from .constants import cpp_code_default, cpp_input_data
 
 
 def execute_cpp_code(cpp_code, input_data=None):
-    return {'output': cpp_code}
 
     # дефолтные значения для отладки
     if not cpp_code:

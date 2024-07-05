@@ -1,8 +1,11 @@
+from django.db import connection
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, Http404, render
 from django.views.generic.base import TemplateView
 from django.views.generic import ListView, DetailView
 from django.template.loader import render_to_string
+from django.db.models import F, Window
+from django.db.models.functions import RowNumber
 
 import json
 
@@ -53,11 +56,8 @@ class CodegolfPageView(DetailView):
             }
         else:
             output = exec_data['output'].replace('\r\n', '\n').strip()
-            response = {
-                'status': 'success',
-                'userOutput': output
-            }
-            is_correct = output == task_obj.expected_output
+            expected_output = task_obj.expected_output.replace('\r\n', '\n').strip()
+            is_correct = output == expected_output
             answer = Answer.objects.create(
                 task=task_obj,
                 code=code,
@@ -66,20 +66,39 @@ class CodegolfPageView(DetailView):
                 username=username,
                 is_correct=is_correct,
             )
+            response = {
+                'status': 'success',
+                'userOutput': output,
+                'is_correct': is_correct,
+            }
         response.update({
             'expectedOutput': task_obj.expected_output,
         })
 
         return JsonResponse(response)
 
+
 def get_scoreboard(request, pk):
-  rows = [
-    {'username': 'ABOBA', 'code_len': '1'},
-    {'username': 'abeba', 'code_len': '10'},
-    {'username': 'bobster', 'code_len': '11'},
-    # Добавьте другие строки по необходимости
-  ]
+    top_5 = [
+        {'username': 'ABOBA', 'code_len': '1'},
+        {'username': 'abeba', 'code_len': '10'},
+        {'username': 'bobster', 'code_len': '11'},
+        # Добавьте другие строки по необходимости
+      ]
 
-  html_content = render_to_string('table_rows.html', {'rows': rows})
+    query = '''
+        SELECT id, username, MIN(code_len) as code_len
+        FROM game_answer
+        WHERE code_len > 0
+        GROUP BY username
+        ORDER BY code_len
+        LIMIT 5
+    '''
 
-  return JsonResponse({'html': html_content})
+    answers = Answer.objects.raw(query)
+
+    top_5 = [{'username': answer.username, 'code_len': answer.code_len} for answer in answers]
+
+    html_content = render_to_string('table_rows.html', {'rows': top_5})
+    print(top_5, '||')
+    return JsonResponse({'html': html_content})
