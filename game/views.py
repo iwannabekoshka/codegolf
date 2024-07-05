@@ -1,5 +1,5 @@
 from django.db import connection
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.shortcuts import get_object_or_404, Http404, render
 from django.views.generic.base import TemplateView
 from django.views.generic import ListView, DetailView
@@ -86,11 +86,12 @@ def get_scoreboard(request, pk):
         {'username': 'bobster', 'code_len': '11'},
         # Добавьте другие строки по необходимости
       ]
-
-    query = '''
-        SELECT id, username, MIN(code_len) as code_len
+    if not Task.objects.filter(pk=pk).exists():
+        return HttpResponse(status=400)
+    query = f'''
+        SELECT id, task_id, username, is_correct, MIN(code_len) as code_len
         FROM game_answer
-        WHERE code_len > 0
+        WHERE code_len > 0 and is_correct = 1 and task_id = {pk}
         GROUP BY username
         ORDER BY code_len
         LIMIT 5
